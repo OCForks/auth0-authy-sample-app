@@ -34,3 +34,4 @@ node_modules
 
 # ignore secrets (API keys, etc)
 secrets/*.js
+.env
