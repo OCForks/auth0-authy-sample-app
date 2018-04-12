@@ -8,7 +8,8 @@ block content
   script.
     var options = {
         auth: {
-            redirectUrl: '#{env.AUTH0_CALLBACK_URL}'
+            sso: true
+          , redirectUrl: '#{env.AUTH0_CALLBACK_URL}'
           , responseType: 'code'
           , params: {
                 scope: 'openid name email picture'
