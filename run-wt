@@ -1,3 +1,0 @@
-#! /bin/bash
-
-wt create --name authy-mfa --secret authy_api_key=YOUR_AUTHY_API_KEY --secret auth0_secret=YOUR_AUTH0_CLIENT_SECRET --secret returnUrl=https://YOUR_AUTH0_DOMAIN.auth0.com/continue --output json authy-mfa-wt.js

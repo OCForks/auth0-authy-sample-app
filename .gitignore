@@ -34,3 +34,5 @@ node_modules
 
 # ignore secrets (API keys, etc)
 .env
+run-wt
+rule.js

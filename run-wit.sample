@@ -1,0 +1,11 @@
+#! /bin/bash
+
+wt create --name authy-mfa \
+    --secret authy_api_key=[YOUR_AUTHY_API_KEY] \
+    --secret auth0_clientID=[YOUR_AUTH0_CLIENT_ID] \
+    --secret auth0_secret=[YOUR_AUTH0_CLIENT_SECRET] \
+    --secret auth0_clientID=[YOUR_AUTH0_CLIENT_ID] \
+    --secret returnUrl=https://[YOUR_AUTH0_DOMAIN]/continue \
+    --output json \
+    --profile YOUR_AUTH0_WEBTASK_PROFILE \
+    authy-mfa-wt.js
