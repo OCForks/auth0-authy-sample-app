@@ -36,3 +36,6 @@ node_modules
 .env
 run-wt
 rule.js
+
+# ignore scratch
+scratch/

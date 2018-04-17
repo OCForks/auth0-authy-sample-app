@@ -11,8 +11,7 @@ block content
   script.
     var options = {
         auth: {
-            sso: true
-          , redirectUrl: '#{env.AUTH0_CALLBACK_URL}'
+            redirectUrl: '#{env.AUTH0_CALLBACK_URL}'
           , responseType: 'code'
           , params: {
                 scope: 'openid name email picture'
