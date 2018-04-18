@@ -34,8 +34,11 @@ node_modules
 
 # ignore secrets (API keys, etc)
 .env
+
+# ignore implemented samples
 run-wt
 rule.js
+authy-mfa-wt.js
 
 # ignore scratch
 scratch/

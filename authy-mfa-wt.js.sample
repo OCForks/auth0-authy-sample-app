@@ -50,7 +50,8 @@ return function (context, req, res) {
       if (req.method === 'POST') {
 
       //change this to authy
-      request.get('https://api.authy.com/protected/json/verify/' + context.body.otp + '/' + context.body.user_sid, 
+      console.log(context);
+      request.get('https://api.authy.com/protected/json/verify/' + context.body.otp + '/' + context.body.user_sid,
       {
         qs: {
           api_key: context.data.authy_api_key
