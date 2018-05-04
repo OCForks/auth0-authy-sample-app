@@ -7,6 +7,7 @@ const async = require('async')
 
 
 return function (context, req, res) {
+
   async.series([
     /*
      * We only care about POST and GET
@@ -24,7 +25,6 @@ return function (context, req, res) {
      */
     function(callback) {
       if (req.method === 'GET') {
-        console.log(req.query.token)
         //check for jwt from rule
         if(!req.query.token){
           res.writeHead(400)
@@ -49,39 +49,38 @@ return function (context, req, res) {
     function(callback) {
       if (req.method === 'POST') {
 
-      //change this to authy
-      console.log(context);
-      request.get('https://api.authy.com/protected/json/verify/' + context.body.otp + '/' + context.body.user_sid,
-      {
-        qs: {
-          api_key: context.data.authy_api_key
-        },
-      },
-      function(err, resp, body){
-        if (err) {
-            return callback(err);
-        }
-
-        body = JSON.parse(body)
-        console.log(body)
-        // Return result to Auth0 (includes OTP and Status. Only when OK)
-        var token = jwt.sign(
-          {
-            subject: context.data.user,
-            expiresInMinutes: 1,
-            audience: context.data.auth0_clientID,
-            issuer: 'auth0:authy:mfa',
-            status: body.status,
-            otp: body.otp
+        //change this to authy
+        request.get('https://api.authy.com/protected/json/verify/' + context.data.otp + '/' + context.data.user_sid,
+        {
+          qs: {
+            api_key: context.data.authy_api_key
           },
-          new Buffer(context.data.auth0_secret, 'base64')
-          );
+        },
+        function(err, resp, body){
+          if (err) {
+              return callback(err);
+          }
 
-        res.writeHead(301, {Location: context.data.returnUrl + '?token=' + token});
-        res.end();
-      });
+          body = JSON.parse(body)
+          
+          // Return result to Auth0 (includes OTP and Status. Only when OK)
+          var token = jwt.sign(
+            {
+              subject: context.data.user,
+              expiresInMinutes: 1,
+              audience: context.data.auth0_clientID,
+              issuer: 'auth0:authy:mfa',
+              status: body.status,
+              otp: body.otp
+            },
+            new Buffer(context.data.auth0_secret, 'base64')
+            );
+
+          res.writeHead(301, {Location: context.data.returnUrl + '?token=' + token});
+          res.end();
+        });
+      }
     }
-  }
   ]);
 
   function renderOtpView(errors, sid) {
@@ -103,7 +102,7 @@ return function (context, req, res) {
             <div class="modal">
               <form onsubmit="showSpinner();" action="" method="POST" enctype="application/x-www-form-urlencoded">
                 <div class="head">
-                  <img class="logo" style="margin:0;" src="https://www.authy.com/downloads/authy-symbol.svg" />
+                  <img class="logo" style="margin:0;" src="https://esb.encircapartners.com/images/logo.png" />
                   <span class="first-line">Authy 2FA</span>
                 </div>
                 <div class="errors <%- (errors.length === 0 ? 'hidden' : '') %>">

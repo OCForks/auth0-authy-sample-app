@@ -37,8 +37,6 @@ node_modules
 
 # ignore implemented samples
 run-wt
-rule.js
-authy-mfa-wt.js
 
 # ignore scratch
 scratch/
