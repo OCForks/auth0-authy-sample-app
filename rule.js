@@ -6,10 +6,8 @@ function (user, context, callback) {
       return;
   }
 
-  if (!user.app_metadata || !user.app_metadata.authyID){
+  if (!user.app_metadata || !user.app_metadata.mfa || !(user.app_metadata.mfa.provider === "authy") ){
     //if not, send them back to activate authy
-    user.app_metadata = user.app_metadata || {};
-    user.app_metadata.needsAuthyActivation = true;
   } else {
     //Returning from OTP validation
     if(context.protocol === 'redirect-callback') {
@@ -30,7 +28,7 @@ function (user, context, callback) {
         configuration.AUTHY_MFA_ISSUER, {
           sub: user.user_id,
           email: user.email,
-          authySID: user.app_metadata.authyID
+          authySID: user.app_metadata.mfa.payload.id
         }
       );
 

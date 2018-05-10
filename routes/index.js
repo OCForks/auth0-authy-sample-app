@@ -8,6 +8,8 @@ var env = {
   AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
 }
 
+var namespace = process.env.AUTH0_TOKEN_NAMESPACE;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'EnCirca MFA Demo', env: env });
@@ -30,7 +32,8 @@ router.get('/logout', function(req, res){
 router.get('/callback',
   passport.authenticate('auth0', { failureRedirect: '/login/error' }),
   function(req, res) {
-    if(!req.user._json.app_metadata || req.user._json.app_metadata.needsAuthyActivation){
+    console.log(req.user);
+    if(!req.user._json[namespace + 'mfa'] || req.user._json[namespace + 'mfa'] === {} ){
       res.redirect('/user/activate')
     } else {
       res.redirect(req.session.returnTo || '/user');
