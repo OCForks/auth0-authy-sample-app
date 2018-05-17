@@ -59,14 +59,10 @@ return function (context, req, res) {
         },
         function(err, resp, body){
           if (err) {
-            console.log("Error: ");
-            console.log(err);
             return callback(err);
           }
 
           body = JSON.parse(body)
-          console.log("Body: ");
-          console.log(body);
           // Return result to Auth0 (includes OTP and Status. Only when OK)
           var token = jwt.sign(
             {
@@ -84,6 +80,12 @@ return function (context, req, res) {
 
           console.log("Return URL: ");
           console.log(context.data.returnUrl);
+          console.log("Return Token: ");
+          console.log(context.data.returnUrl);
+          console.log("Return State: ")
+          console.log(context.data.state);
+          console.log("Data: ")
+          console.log(context.data);
           res.writeHead(301, {Location: context.data.returnUrl + '?token=' + token + '&state=' + context.data.state});
           res.end();
         });

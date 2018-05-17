@@ -10,9 +10,11 @@ var env = {
 
 var namespace = process.env.AUTH0_TOKEN_NAMESPACE;
 
+var title = process.env.TITLE || 'Authy MFA Demo';
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'EnCirca MFA Demo', env: env });
+  res.render('index', { title: title, env: env });
 });
 
 router.get('/login',

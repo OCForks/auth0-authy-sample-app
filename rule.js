@@ -1,18 +1,20 @@
 function (user, context, callback) {
 
+  console.log("Authy MFA Test");
   if (context.clientID !== configuration.AUTHY_MFA_CLIENT_ID) {
       // Proceed without further action
+      console.log("Not executing Authy MFA Test");
       callback(null,user,context);
       return;
   }
+  console.log("Proceeding with Authy MFA Test");
+  console.log(context);
 
-  if (!user.app_metadata || !user.app_metadata.mfa || !(user.app_metadata.mfa.provider === "authy") ){
+  if (!user.app_metadata || !user.app_metadata.mfa || user.app_metadata.mfa.provider !== "authy" ){
     //if not, send them back to activate authy
   } else {
     //Returning from OTP validation
     if(context.protocol === 'redirect-callback') {
-      console.log("Redirect");
-      console.log(configuration.AUTHY_MFA_CLIENT_ID);
       verifyToken(
         configuration.AUTHY_MFA_CLIENT_ID,
         configuration.AUTHY_MFA_CLIENT_SECRET,
@@ -52,9 +54,6 @@ function (user, context, callback) {
   }
 
   function verifyToken(clientId, clientSecret, issuer, token, cb) {
-    console.log("ClientId, Token: ");
-    console.log(clientId);
-    console.log(token);
     jwt.verify(
       token,
       new Buffer(clientSecret, "base64").toString("binary"), {
@@ -66,12 +65,8 @@ function (user, context, callback) {
   }
   function postVerify(err, decoded) {
     if (err) {
-      console.log("Error: ");
-      console.log(err);
       return callback(new UnauthorizedError("Authy MFA failed"));
     } else {
-      console.log("Decoded: ");
-      console.log(decoded);
       // User's password has been changed successfully
       return callback(null, user, context);
     }
